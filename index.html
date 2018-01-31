@@ -43,7 +43,7 @@
         <blockquote>StackStarter.io/spin</blockquote>
       </div>
       <div class="spin-code">
-        <blockquote>Spin Code: NJCAMP</blockquote>
+        <blockquote>Spin Code: NJPHP</blockquote>
       </div>
     </header>
 
@@ -52,7 +52,7 @@
 			<!-- Any section element inside of this container is displayed as a slide -->
 			<div class="slides">
 				<section>
-					<h1>Object Oriented PHP</h1>
+          <h2>Object Oriented PHP</h2>
           <img class="no-style-image" style= "width: 360px;" src="https://cdn0.froala.com/assets/editor/docs/server/meta-social/php-e8c6425acd65e1cbc012639ad25598c7.png"/>
           <h6>Building solid foundations</h6>
 					<p>
@@ -80,7 +80,7 @@
 					<h2>Play Along!</h2>
 					<img src="images/ss_logo_blkbg.png" class="no-style-image" style="width: 360px;"/>
 					<blockquote>StackStarter.io/spin</blockquote>
-          <blockqoute style="font-size: .8em">Spin Code: NJCAMP</blockquote>
+          <blockqoute style="font-size: .8em">Spin Code: NJPHP</blockquote>
 					<aside class="notes">
               <ul>
                 <li>We will be going through alot of code.</li>
@@ -517,8 +517,130 @@ class Car implements VehicleInterface {
           </section>
         </section>
       <section>
-        <h4>Phew.. ok...</h4>
-        <h2>what about Drupal?</h2>
+        <section>
+          <h4>Phew.. ok...</h4>
+          <h2>what about Drupal?</h2>
+        </section>
+        <section>
+          <p>Lets spin up a Drupal instance</p>
+          <h2>Spin Code: NJDRUPAL</h2>
+        </section>
+        <section>
+						<h2>Stucture of a module</h2>
+						<div class="fragment" data-fragment-index="1">
+						 <p>/modules/custom/hello/hello.info.yml</p>
+            <pre><code class="yaml" data-trim>
+name: Hello
+description: A friendly Drupal 8 module
+type: module
+core: 8.x
+            </code></pre>
+            <div class="fragment" data-fragment-index="2"><p>Modules now live in the /modules directory</p>
+            </div>
+            <div class="fragment" data-fragment-index="3">
+            	<p>We don't need a .module file anymore!</p>
+            </div>
+          </div>
+          </section>
+          <section>
+              <h2>Lets make a Page...</h2>
+              <div class="fragment" data-fragment-index="1">
+                <p>Without hook_menu!</p>
+              </div>
+               <aside class="notes">
+                <ul>
+                  <li>The Synfony Routing component is used for defining our routes</li>
+                </ul>
+              </aside>
+            </section>
+             <section>
+      /modules/custom/hello/src/Controller/HelloController.php
+          <pre><code class="php" data-trim>
+/**
+* Our first Drupal 8 controller.
+*/
+namespace Drupal\hello\Controller;
+
+use Drupal\Core\Controller\ControllerBase;
+
+class HelloController extends ControllerBase {
+  public function sayHi() {
+    return array(
+      '#markup'=>"Hello Drupal 8!",
+    );
+  }
+}
+          </code></pre>
+        </section>
+        <section>
+            <p>/modules/custom/hello/hello.routing.yml</p>
+            <pre>
+              <code class="yaml" data-trim>
+              hello.sayHi:
+  path: '/hello'
+  defaults:
+    _controller: '\Drupal\hello\Controller\HelloController::sayHi'
+  requirements:
+    _permission: 'access content'
+
+              </code>
+            </pre>
+          </section>
+          <section>
+              <h2>What about theming our content?</h2>
+              <div class="fragment" data-fragment-index="1">
+                  <p>This will look procedural</p>
+              </div>
+            </section>
+    
+            <section>
+              <p>/modules/custom/hello/hello.module</p>
+              <pre>
+                <code class="php" data-trim>
+/**
+* Implements hook_theme
+*/
+function hello_theme() {
+  $theme['say_hello'] = array(
+    'variables' => array(),
+    'template' => 'say_hello',
+  );
+    
+  return $theme;
+}
+                </code>
+              </pre>
+            </section>
+            <section>
+                <p>/modules/custom/hello/templates/say_hello.html.twig</p>
+                <pre>
+                  <code class="twig" data-trim>
+{% trans %}
+  <h1>Hello!</h1>
+{% endtrans %}
+                  </code>
+                </pre>
+              </section>
+              <section>
+                /modules/custom/hello/src/Controller/HelloController.php
+                <pre><code class="php" data-trim>
+      /**
+       * Our first Drupal 8 controller.
+       * Lets say HI
+       */
+      namespace Drupal\hello\Controller;
+      
+      use Drupal\Core\Controller\ControllerBase;
+      
+      class HelloController extends ControllerBase {
+        public function sayHi() {
+          return array(
+              '#theme'=>'say_hello',
+            );
+        }
+      }
+                </code></pre>
+              </section>
       </section>
         
       <section>
@@ -526,7 +648,7 @@ class Car implements VehicleInterface {
           <h3>Questions?</h3>
           <p>Email: <a href='mailto:nick@segosolutions.com'>nick@segosolutions.com</a></a>
           <p>Twitter: <a href="http://twitter.com/direct">@direct</a></p>
-          <p>Slides Available: <br/> <a href="http://nickgs.github.io/drupal8-testdrive-module">http://nickgs.github.io/drupal8-testdrive-module</a></p>
+          <p>Slides Available: <br/> <a href="http://nickgs.com/php-oo-slides">http://nickgs.com/php-oo-slides</a></p>
       </section>
 			</div>
 		<footer class="sego-logo">
