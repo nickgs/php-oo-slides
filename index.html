@@ -69,9 +69,7 @@
 					<aside class="notes">
               <ul>
                 <li>Who is familar with OO concepts?</li>
-                <li>How many are familar with D7 module development</li>
-                <li>Who loves D7 development?</li>
-                <li>Who is excited about Drupal 8?</li>
+                <li>What programming environments are you familar with?</li>
               </ul>
             </aside>
 				</section>
@@ -146,6 +144,11 @@
               <h2>Procedural Code</h2> 
               <h5>vs</h5> 
               <h2>Object Oriented Code</h2>
+              <aside class="notes">
+                <ul>
+                  <li>Live coding demo</li>
+                </ul>
+              </aside>
             </section>
             <section>
              <h2>Lets Review our Object Oriented Concepts</h2>
@@ -642,6 +645,147 @@ function hello_theme() {
       }
                 </code></pre>
               </section>
+               <section>
+          <h2>Services</h2>
+          <blockquote class="fragment" data-fragment-index="1">
+            Small (as possible) stateless objects that perform some testable task.
+          </blockquote>
+          <p class="fragment" data-fragment-index="2">
+            This opens up an interesting and powerful world for us...
+          </p>
+        </section>
+        <section>
+          <h2>The Service Container</h2>
+          <p>A service container (or dependency injection container) is a PHP object that manages the instantiation of services.</p>
+        </section>
+        <section>
+          /modules/custom/hello/src/HelloService.php
+          <pre><code class="php" data-trim>
+namespace Drupal\hello;
+
+class HelloService {
+  //dead simple example.
+  public function doSomeWork() {
+    //some heavy lifting.
+    drupal_set_message("Hello Services");
+  }
+}
+          </code>
+          </pre>
+        </section>
+        <section>
+            <p>/modules/custom/hello/hello.services.yml</p>
+              <pre>
+              <code class="yaml" data-trim>
+              services:
+  hello.hello_service:
+    class: Drupal\hello\HelloService
+              </code>
+            </pre>
+          </section>
+          <section>
+            <h2>Now lets use it!</h2>
+          </section>
+          <section>
+          /modules/custom/hello/src/Controller/HelloController.php
+          <pre><code class="php" data-trim>
+/**
+ * Our first Drupal 8 controller with a custom service!
+ * Lets say HI
+ */
+namespace Drupal\hello\Controller;
+
+use Drupal\Core\Controller\ControllerBase;
+use Drupal\hello\HelloService;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+
+class HelloController extends ControllerBase {
+  protected $helloServ;
+
+  //our contructor is injected with our service.
+  public function __construct(HelloService $s) {
+    $this->helloServ = $s;
+  }
+
+  //This is the interesting method. ControllerBase will call this.
+  public static function create(ContainerInterface $container) {
+    //and create an instance of this class, injecting our service!
+    return new static($container->get('hello.hello_service'));
+  }
+
+  public function sayHi($name) {
+    //lets use that bad boy!
+    $this->helloServ->doSomeWork();
+
+    return array(
+        '#theme'=>'say_hello',
+        '#name' => $name,
+      );
+  }
+}
+
+          </code>
+          </pre>
+          <aside class="notes">
+            static refers to whatever class in the hierarchy you called the method on.
+          </aside>
+        </section>
+        <section>
+          <h2>Services can serve many purposes</h2>
+          <h5>Lets take a look at another example</h5>
+        </section>
+        <section>
+          <h2>Drupal 8 Events</h2>
+          <p>Leveraging the Symfony Framework Events.</p>
+          <p>List of core events: <a href="http://bit.ly/core_events">http://bit.ly/core_events</a></p>
+        </section>
+        <section>
+          /modules/custom/hello/src/EventSubscriber/HelloEventSubscriber.php
+          <pre><code class="php" data-trim>
+namespace Drupal\hello\EventSubscriber;
+
+use Symfony\Component\HttpKernel\KernelEvents;
+use Symfony\Component\HttpKernel\Event\GetResponseEvent;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Drupal\Core\Session\AccountInterface;
+
+class HelloEventSubscriber implements EventSubscriberInterface {
+  protected $account;
+
+  public function __contruct(AccountInterface $account) {
+    $this->account = $account;
+  }
+
+  public function checkForSomething(GetResponseEvent $event) {
+      drupal_set_message("Big brother is here!");
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  static function getSubscribedEvents() {
+    $events[KernelEvents::REQUEST][] = array('checkForSomething');
+    return $events;
+  }
+}
+          </code>
+          </pre>
+        </section>
+        <section>
+            <p>/modules/custom/hello/hello.services.yml</p>
+              <pre>
+              <code class="yaml" data-trim>
+  hello_event_subscriber:
+    class: Drupal\hello\EventSubscriber\HelloEventSubscriber
+    arguments: ['@current_user']
+    tags: #Our Service Tags
+      - {name: event_subscriber}
+              </code>
+            </pre>
+          </section>
+          <section>
+            <p>So much more to explore and learn...</p>
+          </section>
       </section>
         
       <section>
