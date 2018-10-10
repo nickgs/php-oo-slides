@@ -43,7 +43,7 @@
         <blockquote>StackStarter.io/spin</blockquote>
       </div>
       <div class="spin-code">
-        <blockquote>Spin Code: NJPHP</blockquote>
+        <blockquote>Spin Code: PHPOO</blockquote>
       </div>
     </header>
 
@@ -172,7 +172,7 @@
         <section>
           <section>
             <h2>Classes and Objects</h2>
-            <img width="600px" src = "http://boomerangazart.com/wp-content/uploads/2017/08/Cool-Pictures-Of-Blueprints-42-About-Remodel-Elegant-Design-with-Pictures-Of-Blueprints.jpg"/>
+            <img width="600px" src = "https://velvetchainsaw.com/wp-content/uploads/2010/06/blueprint.jpg"/>
           </section>
           <section>
             <h2>The Class Keyword</h2>
@@ -405,7 +405,7 @@ final class CarTest extends TestCase {
             <p>"Polymorphism allows the expression of some sort of contract, with potentially many types implementing that contract (whether through class inheritance or not) in different ways, each according to their own purpose. Code using that contract should not(*) have to care about which implementation is involved, only that the contract will be obeyed."</p>
           </section>
           <section>
-            <h4>This is acheived in OOP with</h4>
+            <h4>This is achieved in OOP with</h4>
             <h2>Interfaces</h2>
           </section>
           <section>
@@ -478,7 +478,7 @@ use Vehicles\Engine;
 class Car implements VehicleInterface {
   private $e; //the cars engine.
 
-  public function __contruct() {
+  public function __construct() {
     $this->e = new Engine();
   }
 }
@@ -493,7 +493,7 @@ use Vehicles\Engine;
 class Car implements VehicleInterface {
   private $e; //the cars engine.
 
-  public function __contruct(Engine $e) {
+  public function __construct(Engine $e) {
     $this->e = $e;
   }
 }
@@ -508,7 +508,7 @@ use Vehicles\EngineInterface;
 class Car implements VehicleInterface {
   private $e; //the cars engine.
 
-  public function __contruct(EngineInterface $e) {
+  public function __construct(EngineInterface $e) {
     $this->e = $e;
   }
 }
@@ -527,10 +527,10 @@ class Car implements VehicleInterface {
         </section>
         <section>
           <p>Lets spin up a Drupal instance</p>
-          <h2>Spin Code: NJDRUPAL</h2>
+          <h2>Spin Code: DRUPAL8</h2>
         </section>
         <section>
-						<h2>Stucture of a module</h2>
+						<h2>Structure of a module</h2>
 						<div class="fragment" data-fragment-index="1">
 						 <p>/modules/custom/hello/hello.info.yml</p>
             <pre><code class="yaml" data-trim>
@@ -752,7 +752,7 @@ use Drupal\Core\Session\AccountInterface;
 class HelloEventSubscriber implements EventSubscriberInterface {
   protected $account;
 
-  public function __contruct(AccountInterface $account) {
+  public function __construct(AccountInterface $account) {
     $this->account = $account;
   }
 
